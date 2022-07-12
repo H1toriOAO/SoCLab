@@ -26,8 +26,10 @@ module IF_ID_REG(
         end else if(~cnt) begin
             ID_inst <= 32'b0;
             cnt     <= 1'b1;
+        end else if(dpc_control) begin
+            ID_inst <= ID_inst;
         end else begin
-            
+            ID_inst <= IF_inst;
         end
     end
 
