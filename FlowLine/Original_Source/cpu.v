@@ -259,4 +259,36 @@ module cpu(
         .MEM_rfrD2   (MEM_rfrD2),
         .MEM_aluc    (MEM_aluc)
     );
+
+    mux 2RFWD(
+        .op     (MEM_wdsel),
+        .a      (MEM_aluc),
+        .b      (MEM_pc4),
+        .c      (MEM_ext),
+        .d      (MEM_dmrd),
+        .out    (MEM_rfwd)
+    );
+    wire [31:0] WB_pc;
+    MEM_WB_REG MEM_WB(
+        .clk            (clk),
+        .rst_n          (rst_n),
+        
+        .MEM_pc         (MEM_pc),
+        .MEM_inst       (MEM_inst),
+                        
+        .MEM_rfwe       (MEM_rfwe),
+        .MEM_rfwd       (MEM_rfwd),
+                        
+        .WB_pc          (WB_pc),
+        .WB_inst        (WB_inst),
+                        
+        .WB_rfwe        (WB_rfwe),
+        .WB_rfwd        (WB_rfwd)
+    );
+    
+    assign debug_wb_have_inst   =   (MEMpc != WBpc);
+    assign debug_wb_pc          =   WB_pc;
+    assign debug_wb_ena         =   WB_rfwe;
+    assign debug_wb_reg         =   WB_inst[11:7];
+    assign debug_wb_value       =   WB_rfwd;
 endmodule
