@@ -21,6 +21,16 @@ module cpu(
     wire [31:0] IF_npc;
     wire [31:0] ID_inst;
 
+    branchhazard BH(
+        .IF_pc        (IF_pc),
+        .ID_pc        (ID_pc),
+        .dpc_control  (dpc_control),
+        .IF_inst      (IF_inst),
+        .ID_inst      (ID_inst),
+        .ID_npc       (ID_npc),
+        .IF_npc       (IF_npc)
+    );
+
     pc PC(
         .clk    (clk),
         .rst_n  (rst_n),
