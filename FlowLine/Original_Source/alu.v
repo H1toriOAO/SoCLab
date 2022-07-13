@@ -17,7 +17,7 @@ module alu(
             3'd6:       calculate = a << b[4:0];              //sll
             3'd7:       calculate = a >> b[4:0];              //srl
             3'd8:       calculate = ($signed(a)) >>> b[4:0];  //sra
-            default:    calculate = 32'b0;ß
+            default:    calculate = 32'b0;
         endcase
     end
     endfunction

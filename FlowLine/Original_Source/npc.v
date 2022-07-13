@@ -10,11 +10,11 @@ module npc(
     assign pc4 = pc + 4;
 
     assign npc = get_npc(pc, imm, base, op);
-    function [31:0] npc(
-        input wire [31:0] pc,
-        input wire [31:0] imm,
-        input wire [31:0] base,
-        input wire [1:0]  op
+    function [31:0] get_npc(
+        input [31:0] pc,
+        input [31:0] imm,
+        input [31:0] base,
+        input [1:0]  op
     );
     begin
         case(op)

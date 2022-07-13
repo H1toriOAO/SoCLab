@@ -10,11 +10,11 @@ module mux(
     assign out = select(a, b, c, d, op);
 
     function [31:0] select(
-        input wire [31:0] a,
-        input wire [31:0] b,
-        input wire [31:0] c,
-        input wire [31:0] d,
-        input wire [1:0]  op
+        input [31:0] a,
+        input [31:0] b,
+        input [31:0] c,
+        input [31:0] d,
+        input [1:0]  op
     );
     begin
         case(op)
