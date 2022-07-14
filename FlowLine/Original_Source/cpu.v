@@ -6,7 +6,7 @@ module cpu(
     input  wire [31:0] MEM_dmrd,
     output wire        MEM_dmwe,
     output wire [31:0] MEM_aluc,
-    output wire [31:0] MEM_rfrD2,
+    output wire [31:0] MEM_rdrD2,
 
     output wire        debug_wb_have_inst,
     output wire [31:0] debug_wb_pc,
@@ -43,9 +43,9 @@ module cpu(
         .rst_n       (rst_n),
         .dpc_control (dpc_control),
         .IF_inst     (IF_inst),
-        .IF_pc       (IF_pc),
+        .IF_npc      (IF_npc),
         .ID_inst     (ID_inst),
-        .ID_pc       (ID_pc)
+        .ID_npc      (ID_npc)
     );
 
     wire       re1;
@@ -145,14 +145,14 @@ module cpu(
         .rst_n  (rst_n),
         .rR1    (ID_inst[19:15]),
         .rR2    (ID_inst[24:20]),
-        .rf_rD1 (ID_rfrD1_pre),
-        .rf_rD2 (ID_rfrD2_pre),
+        .rD1    (ID_rfrD1_pre),
+        .rD2    (ID_rfrD2_pre),
         .rf_we  (WB_rfwe),
         .wR     (WB_inst[11:7]),
         .wD     (WB_rfwd)
     );
 
-    mux TO_RS1(
+    mux 2RS1(
         .op   (rd1_sel),
         .a    (ID_rfrD1_pre),
         .b    (fw1),
@@ -161,8 +161,7 @@ module cpu(
         .out  (ID_rfrD1)
     );
 
-    wire [31:0] ID_rfrD2;
-    mux TO_RS2(
+    mux 2RS2(
         .op   (rd2_sel),
         .a    (ID_rfrD2_pre),
         .b    (fw2),
@@ -179,7 +178,7 @@ module cpu(
     );
 
     wire [31:0] ID_alub;
-    mux TO_ALUB2(
+    mux 2ALUB2(
         .op   (alub_sel),
         .a    (ID_rfrD2),
         .b    (ID_ext),
@@ -232,7 +231,7 @@ module cpu(
         .op  (EX_aluop)
     );
 
-    mux TO_EXRF(
+    mux 2EXRF(
         .op  (EX_wdsel),
         .a   (EX_aluc),
         .b   (EX_pc4),
@@ -271,7 +270,7 @@ module cpu(
         .MEM_aluc    (MEM_aluc)
     );
 
-    mux TO_RFWD(
+    mux 2RFWD(
         .op     (MEM_wdsel),
         .a      (MEM_aluc),
         .b      (MEM_pc4),
@@ -297,7 +296,7 @@ module cpu(
         .WB_rfwd        (WB_rfwd)
     );
     
-    assign debug_wb_have_inst   =   (MEM_pc != WB_pc);
+    assign debug_wb_have_inst   =   (MEMpc != WBpc);
     assign debug_wb_pc          =   WB_pc;
     assign debug_wb_ena         =   WB_rfwe;
     assign debug_wb_reg         =   WB_inst[11:7];
