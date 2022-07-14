@@ -1,4 +1,4 @@
-module DataHazard(
+module datahazard(
     input  wire [31:0] ID_inst,
     input  wire [31:0] EX_inst,
     input  wire [31:0] MEM_inst,
@@ -23,7 +23,7 @@ module DataHazard(
     output reg  [1:0]  rd1_sel,
     output reg  [1:0]  rd2_sel,
     
-    output reg  [31:0] fw1,    // data forward
+    output reg  [31:0] fw1,
     output reg  [31:0] fw2
     );
     
